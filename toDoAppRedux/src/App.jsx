@@ -1,33 +1,45 @@
+import { Box, Button, Card, Container, Flex, FormControl, FormLabel, Grid, Heading, Input, Stack, Text } from '@chakra-ui/react'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import TodoCard from './components/TodoCard';
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
+  const [todoInputValue, setTodoInputValue] = useState('');
+  const [toDoList, setToDoList] = useState([]);
+  const HandleInputChange = (event) => {
+    setTodoInputValue(event.target.value);
+  }
+  const addToDo = () => {
+    if (todoInputValue !== "") {
+      setToDoList([...toDoList, { id: toDoList.length + 1, TodoText: todoInputValue }]);
+      setTodoInputValue("");
+    }
+  }
+  const handleDelete = (id) => {
+    const updatedToDoList = toDoList.filter((todo) => todo.id !== id); // Elimde db olmadığı için bu şekilde yapıyorum.
+    setToDoList(updatedToDoList); // Yeni listeyi stateye yerleştirdim.
+  }
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Container maxW={"container.xl"} h={"100vh"} centerContent>
+        <Flex mt={"10"} mb={"10"} >
+          <Heading>To-Do List App</Heading>
+        </Flex>
+        <Flex direction={"row"} gap={"2"} p={"10"} mb={"5"} borderWidth='1px' borderRadius='lg'>
+          <Box>
+            <Input size={"md"} type='text' onChange={HandleInputChange} value={todoInputValue} />
+          </Box>
+          <Box>
+            <Button onClick={addToDo}>Add</Button>
+          </Box>
+        </Flex>
+        <Flex direction={"column"} gap={"2"}>
+          {toDoList.map((todo) => (
+            <TodoCard key={todo.id} id={todo.id} TodoText={todo.TodoText} onDelete={handleDelete} />
+          ))}
+        </Flex>
+      </Container>
     </>
   )
 }
