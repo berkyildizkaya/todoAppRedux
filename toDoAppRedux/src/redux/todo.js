@@ -8,13 +8,20 @@ export const todoListSlice = createSlice({
             const newTodo = {
                 id: state.length + 1,
                 TodoText: action.payload,
+                isComplete: false
             };
             state.push(newTodo);
         },
         todoDelete: (state, action) => {
             return state.filter((todo) => todo.id !== action.payload)
-        }   
+        },
+        todoComplete: (state, action) => {
+            const todo = state.find((todo) => todo.id === action.payload);
+            if (todo) {
+                todo.isComplete = !todo.isComplete;
+            }
+        }
     }
 });
-export const { todoAdd, todoDelete } = todoListSlice.actions;
+export const { todoAdd, todoDelete,todoComplete } = todoListSlice.actions;
 export default todoListSlice.reducer;

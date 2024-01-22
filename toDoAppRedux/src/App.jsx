@@ -1,8 +1,8 @@
-import { Box, Button, Card, Container, Flex, FormControl, FormLabel, Grid, Heading, Input, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, Container, Flex, Heading, Input} from '@chakra-ui/react'
 import { useState } from 'react'
 import TodoCard from './components/TodoCard';
 import { useDispatch, useSelector } from 'react-redux';
-import {todoAdd,todoDelete} from './redux/todo'
+import { todoAdd } from './redux/todo'
 
 
 function App() {
@@ -12,19 +12,11 @@ function App() {
   const HandleInputChange = (event) => {
     setTodoInputValue(event.target.value);
   }
-  const handleAddTodo = () =>{
-    dispatch(todoAdd(todoInputValue))
-  }
-  // const addToDo = () => {
-  //   if (todoInputValue !== "") {
-  //     setToDoList([...toDoList, { id: toDoList.length + 1, TodoText: todoInputValue }]);
-  //     setTodoInputValue("");
-  //   }
-  // }
-  const handleDelete = (id) => {
-    dispatch(todoDelete(id))
-    // const updatedToDoList = toDoList.filter((todo) => todo.id !== id); // Elimde db olmadığı için bu şekilde yapıyorum.
-    // setToDoList(updatedToDoList); // Yeni listeyi stateye yerleştirdim.
+  const handleAddTodo = () => {
+    if (todoInputValue !== "") {
+      dispatch(todoAdd(todoInputValue))
+    }
+    setTodoInputValue("");
   }
   return (
     <>
@@ -42,7 +34,7 @@ function App() {
         </Flex>
         <Flex direction={"column"} gap={"2"}>
           {todos.map((todo) => (
-            <TodoCard key={todo.id} id={todo.id} TodoText={todo.TodoText} onDelete={handleDelete} />
+            <TodoCard key={todo.id} id={todo.id} TodoText={todo.TodoText} isComplete={todo.isComplete} />
           ))}
         </Flex>
       </Container>
