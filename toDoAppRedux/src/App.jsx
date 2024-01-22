@@ -1,24 +1,30 @@
 import { Box, Button, Card, Container, Flex, FormControl, FormLabel, Grid, Heading, Input, Stack, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import TodoCard from './components/TodoCard';
+import { useDispatch, useSelector } from 'react-redux';
+import {todoAdd,todoDelete} from './redux/todo'
 
 
 function App() {
-
+  const dispatch = useDispatch();
   const [todoInputValue, setTodoInputValue] = useState('');
-  const [toDoList, setToDoList] = useState([]);
+  const todos = useSelector((state) => state.todos);
   const HandleInputChange = (event) => {
     setTodoInputValue(event.target.value);
   }
-  const addToDo = () => {
-    if (todoInputValue !== "") {
-      setToDoList([...toDoList, { id: toDoList.length + 1, TodoText: todoInputValue }]);
-      setTodoInputValue("");
-    }
+  const handleAddTodo = () =>{
+    dispatch(todoAdd(todoInputValue))
   }
+  // const addToDo = () => {
+  //   if (todoInputValue !== "") {
+  //     setToDoList([...toDoList, { id: toDoList.length + 1, TodoText: todoInputValue }]);
+  //     setTodoInputValue("");
+  //   }
+  // }
   const handleDelete = (id) => {
-    const updatedToDoList = toDoList.filter((todo) => todo.id !== id); // Elimde db olmadığı için bu şekilde yapıyorum.
-    setToDoList(updatedToDoList); // Yeni listeyi stateye yerleştirdim.
+    dispatch(todoDelete(id))
+    // const updatedToDoList = toDoList.filter((todo) => todo.id !== id); // Elimde db olmadığı için bu şekilde yapıyorum.
+    // setToDoList(updatedToDoList); // Yeni listeyi stateye yerleştirdim.
   }
   return (
     <>
@@ -31,11 +37,11 @@ function App() {
             <Input size={"md"} type='text' onChange={HandleInputChange} value={todoInputValue} />
           </Box>
           <Box>
-            <Button onClick={addToDo}>Add</Button>
+            <Button onClick={handleAddTodo}>Add</Button>
           </Box>
         </Flex>
         <Flex direction={"column"} gap={"2"}>
-          {toDoList.map((todo) => (
+          {todos.map((todo) => (
             <TodoCard key={todo.id} id={todo.id} TodoText={todo.TodoText} onDelete={handleDelete} />
           ))}
         </Flex>

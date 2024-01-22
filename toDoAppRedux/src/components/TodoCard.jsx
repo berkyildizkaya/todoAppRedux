@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Card, CardBody, Checkbox, Container, Flex, Grid, GridItem, HStack, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 
-export default function TodoCard({ id, TodoText,onDelete }) {
+export default function TodoCard({ id, TodoText,onDelete,onComplete,isComplete }) {
     const handleDelete = () =>{
         onDelete(id);
     }
@@ -11,7 +11,7 @@ export default function TodoCard({ id, TodoText,onDelete }) {
                 <CardBody>
                     <Flex align={"center"} wrap={["wrap", "nowrap"]} gap={"2"}>
                         <Box>
-                            <Checkbox mt={"5px"} />
+                            <Checkbox mt={"5px"}  />
                         </Box>
                         <Box>
                             <Text>
